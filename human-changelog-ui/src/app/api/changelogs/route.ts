@@ -19,7 +19,7 @@ export async function GET(request: Request) {
             return {
                 name: properties.Name.title[0].plain_text,
                 origin: properties.origin.rich_text[0].text.content,
-                version: properties.version.number,
+                version: properties.version.rich_text[0].text.content,
                 changelog: properties.Changelog.rich_text[0].text.content,
                 url
             }
