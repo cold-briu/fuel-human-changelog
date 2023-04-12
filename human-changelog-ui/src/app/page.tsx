@@ -19,7 +19,7 @@ function Card({ name, origin, version, changelog, url }: any) {
       <div className={styles.code}>
         <br />
         {
-          changelog.split('\n').map((e: string) => (<p>{e}</p>))
+          changelog.split('\n').map((e: string, i: number) => (<p key={i}>{e}</p>))
         }
       </div>
     </div>
