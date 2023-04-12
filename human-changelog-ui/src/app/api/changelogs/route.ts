@@ -59,7 +59,13 @@ export async function POST(request: Request) {
                     ],
                 },
                 "version": {
-                    "number": 1,
+                    "rich_text": [
+                        {
+                            "text": {
+                                "content": version,
+                            },
+                        },
+                    ],
                 },
                 "Changelog": {
                     "rich_text": [

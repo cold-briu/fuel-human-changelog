@@ -10,10 +10,24 @@ content-type: application/json
 
 {
     "name" : "release bby",
-    "origin" : "fork",
+    "origin" : "from local fork",
     "version" : "0.99",
     "changelog" : "Go modular ⛽️"
 }
+
+###
+
+POST https://human-changelog-git-main-cold-briu.vercel.app/api/changelogs
+content-type: application/json
+
+{
+    "name" : "2 release bby",
+    "origin" : "from vercel fork",
+    "version" : "0.99",
+    "changelog" : "Go modular ⛽️"
+}
+
+
 
 ###
 
