@@ -1,0 +1,17 @@
+name: Send human changelog to notion
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  create-card:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy Stage
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://human-changelog-git-main-cold-briu.vercel.app/api/changelogs'
+        method: 'POST'
+        customHeaders: '{"Content-Type": "application/json"}'
+        data: '{ "name" : "release bby", "origin" : "fork", "version" : "0.99", "changelog" : "Go modular ⛽️" }'
