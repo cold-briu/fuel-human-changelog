@@ -24,11 +24,61 @@ export async function GET(request: Request) {
                 url
             }
         })
-        console.log(response);
 
         return new Response(JSON.stringify(data))
     } catch (error) {
         console.error(error);
+    }
+}
 
+export async function POST(request: Request) {
+    const { name, origin, version, changelog } = await request.json();
+    try {
+        const response = await notion.pages.create({
+            "parent": {
+                "type": "database_id",
+                "database_id": databaseId ?? "NO_DATABASE_ID"
+            },
+            properties: {
+                "Name": {
+                    "title": [
+                        {
+                            "text": {
+                                "content": name,
+                            },
+                        },
+                    ],
+                },
+                "origin": {
+                    "rich_text": [
+                        {
+                            "text": {
+                                "content": origin,
+                            },
+                        },
+                    ],
+                },
+                "version": {
+                    "number": 1,
+                },
+                "Changelog": {
+                    "rich_text": [
+                        {
+                            "text": {
+                                "content": changelog,
+                            },
+                        },
+                    ],
+                },
+                "Status": {
+                    "select": {
+                        "name": "new"
+                    }
+                }
+            } as any
+        })
+        return new Response(JSON.stringify(response))
+    } catch (error) {
+        console.error(error);
     }
 }
