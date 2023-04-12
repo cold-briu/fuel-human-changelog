@@ -24,9 +24,8 @@ export async function GET(request: Request) {
                 url
             }
         })
-        console.log(response);
 
-        return new Response(JSON.stringify(data))
+        return new Response(JSON.stringify(response))
     } catch (error) {
         console.error(error);
 
