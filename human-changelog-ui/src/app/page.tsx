@@ -29,7 +29,7 @@ function Card({ name, origin, version, changelog, url }: any) {
 
 export default function Home() {
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any>();
 
   async function fetchData() {
     const res = await fetch("../api/changelogs");
@@ -45,11 +45,12 @@ export default function Home() {
   return (
     <main className={styles.main}>
 
-      {data.length > 0 ?
-        data.map((e: any, i) => <Card key={i} {...e} />)
+      {!data && <p>Loading...</p>}
+      {data && (data.length > 0 ?
+        data.map((e: any, i: number) => <Card key={i} {...e} />)
         :
-        <p>Loading...</p>
-      }
+        <p>No data</p>
+      )}
     </main>
   )
 }
