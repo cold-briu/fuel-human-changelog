@@ -1,0 +1,27 @@
+name: Upload Release Notes
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  create-card:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Parse release body
+      shell: bash
+      
+      run: echo "PARSED_RELEASE_BODY=$(echo '${{ github.event.release.body }}' | sed 's/$/\\n/' | tr -d '\n' )" >> $GITHUB_ENV
+    - name: Deploy Stage
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://human-changelog-git-main-cold-briu.vercel.app/api/changelogs'
+        method: 'POST'
+        customHeaders: '{"Content-Type": "application/json"}'
+        data: >-
+            { 
+              "name" : "${{ github.event.release.name }}", 
+              "origin" : "${{ github.repository }}", 
+              "version" : "${{ github.event.release.tag_name }}", 
+              "changelog" : "${{ env.PARSED_RELEASE_BODY }}"
+            }
