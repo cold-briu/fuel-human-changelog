@@ -43,16 +43,16 @@ interface RequestPayload {
 
 function validatePayload(payload: RequestPayload) {
     return (
-        typeof payload.name == 'string' &&
-        typeof payload.origin == 'string' &&
-        typeof payload.version == 'string' &&
-        typeof payload.changelog == 'string'
+        payload.name !== undefined &&
+        payload.origin !== undefined &&
+        payload.version !== undefined &&
+        payload.changelog !== undefined
     )
 }
 
 export async function POST(request: Request) {
     const payload: RequestPayload = await request.json();
-    if (!validatePayload) {
+    if (validatePayload(payload)) {
         console.log("req payload", JSON.stringify(payload));
 
         const res = new Response("Invalid request payload", { status: 400 })
