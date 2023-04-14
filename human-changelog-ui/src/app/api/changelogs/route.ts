@@ -4,6 +4,8 @@ import { QueryDatabaseParameters } from "@notionhq/client/build/src/api-endpoint
 const notion = new Client({ auth: process.env.NOTION_KEY })
 const databaseId = process.env.NOTION_DATABASE_ID
 
+
+
 export async function GET(request: Request) {
     try {
         const response = await notion.databases.query({
@@ -31,8 +33,29 @@ export async function GET(request: Request) {
     }
 }
 
+
+interface RequestPayload {
+    name: string;
+    origin: string;
+    version: string;
+    changelog: string;
+}
+
+function validatePayload(payload: RequestPayload) {
+    return (
+        typeof payload.name == 'string' &&
+        typeof payload.origin == 'string' &&
+        typeof payload.version == 'string' &&
+        typeof payload.changelog == 'string'
+    )
+}
+
 export async function POST(request: Request) {
-    const { name, origin, version, changelog } = await request.json();
+    const payload: RequestPayload = await request.json();
+    if (!validatePayload) {
+        const res = new Response("Invalid request payload", { status: 400 })
+    }
+    const { name, origin, version, changelog } = payload
     try {
         const response = await notion.pages.create({
             "parent": {
@@ -85,6 +108,7 @@ export async function POST(request: Request) {
         })
         return new Response(JSON.stringify(response))
     } catch (error) {
+        return new Response(JSON.stringify(error))
         console.error(error);
     }
 }
