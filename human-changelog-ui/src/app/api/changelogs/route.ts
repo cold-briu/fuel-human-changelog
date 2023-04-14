@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     if (validatePayload(payload)) {
         console.log("req payload", JSON.stringify(payload));
 
-        const res = new Response("Invalid request payload", { status: 400 })
+        return new Response("Invalid request payload", { status: 400 })
     }
     const { name, origin, version, changelog } = payload
     try {
