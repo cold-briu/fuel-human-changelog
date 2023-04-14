@@ -47,7 +47,10 @@ export async function POST(request: Request) {
     ) {
         console.log("req payload", JSON.stringify(payload));
 
-        return new Response("Invalid request payload", { status: 400 })
+        return new Response(JSON.stringify({
+            message: "Invalid request payload",
+            payload
+        }), { status: 400 })
     }
     try {
         const response = await notion.pages.create({
