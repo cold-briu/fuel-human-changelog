@@ -34,30 +34,21 @@ export async function GET(request: Request) {
 }
 
 
-interface RequestPayload {
-    name: string;
-    origin: string;
-    version: string;
-    changelog: string;
-}
-
-function validatePayload(payload: RequestPayload) {
-    return (
-        payload.name !== undefined &&
-        payload.origin !== undefined &&
-        payload.version !== undefined &&
-        payload.changelog !== undefined
-    )
-}
 
 export async function POST(request: Request) {
-    const payload: RequestPayload = await request.json();
-    if (validatePayload(payload)) {
+    const payload = await request.json();
+    const { name, origin, version, changelog } = payload
+
+    if (
+        name === undefined ||
+        origin === undefined ||
+        version === undefined ||
+        changelog === undefined
+    ) {
         console.log("req payload", JSON.stringify(payload));
 
         return new Response("Invalid request payload", { status: 400 })
     }
-    const { name, origin, version, changelog } = payload
     try {
         const response = await notion.pages.create({
             "parent": {
