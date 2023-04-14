@@ -110,7 +110,6 @@ export async function POST(request: Request) {
         })
         return new Response(JSON.stringify(response))
     } catch (error) {
-        return new Response(JSON.stringify(error))
-        console.error(error);
+        return new Response(JSON.stringify({ error, payload }), { status: 500 })
     }
 }
