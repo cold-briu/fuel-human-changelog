@@ -22,7 +22,7 @@ export async function GET(request: Request) {
                 name: properties.Name.title[0].plain_text,
                 origin: properties.origin.rich_text[0].text.content,
                 version: properties.version.rich_text[0].text.content,
-                changelog: properties.Changelog.rich_text[0].text.content,
+                changelog: properties.changelog.rich_text[0].text.content,
                 url
             }
         })
@@ -86,7 +86,7 @@ export async function POST(request: Request) {
                         },
                     ],
                 },
-                "Changelog": {
+                "changelog": {
                     "rich_text": [
                         {
                             "text": {
