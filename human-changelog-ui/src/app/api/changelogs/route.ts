@@ -68,33 +68,9 @@ export async function POST(request: Request) {
                         },
                     ],
                 },
-                "origin": {
-                    "rich_text": [
-                        {
-                            "text": {
-                                "content": origin,
-                            },
-                        },
-                    ],
-                },
-                "version": {
-                    "rich_text": [
-                        {
-                            "text": {
-                                "content": version,
-                            },
-                        },
-                    ],
-                },
-                "changelog": {
-                    "rich_text": [
-                        {
-                            "text": {
-                                "content": changelog,
-                            },
-                        },
-                    ],
-                },
+                "origin": parseRichText(version),
+                "version": parseRichText(version),
+                "changelog": parseRichText(changelog),
                 "Status": {
                     "select": {
                         "name": "new"
@@ -105,5 +81,17 @@ export async function POST(request: Request) {
         return new Response(JSON.stringify(response))
     } catch (error) {
         return new Response(JSON.stringify({ error, payload }), { status: 500 })
+    }
+}
+
+function parseRichText(input: string) {
+    return {
+        "rich_text": [
+            {
+                "text": {
+                    "content": input,
+                },
+            },
+        ],
     }
 }
