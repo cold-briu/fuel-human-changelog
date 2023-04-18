@@ -23,7 +23,8 @@ export async function GET(request: Request) {
                 origin: properties.origin.rich_text[0].text.content,
                 version: properties.version.rich_text[0].text.content,
                 changelog: properties.changelog.rich_text[0].text.content,
-                url
+                date: properties.date.rich_text[0].text.content,
+                url: properties.releaseUrl.rich_text[0].text.content,
             }
         })
 
@@ -37,7 +38,9 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
     const payload = await request.json();
-    const { name, origin, version, changelog } = payload
+    const { name, origin, version, changelog, date, url } = payload
+
+    console.log("req payload", JSON.stringify(payload));
 
     if (
         name === undefined ||
@@ -45,7 +48,6 @@ export async function POST(request: Request) {
         version === undefined ||
         changelog === undefined
     ) {
-        console.log("req payload", JSON.stringify(payload));
 
         return new Response(JSON.stringify({
             message: "Invalid request payload",
@@ -71,6 +73,8 @@ export async function POST(request: Request) {
                 "origin": parseRichText(version),
                 "version": parseRichText(version),
                 "changelog": parseRichText(changelog),
+                "date": parseRichText(date),
+                "releaseUrl": parseRichText(url),
                 "Status": {
                     "select": {
                         "name": "new"
