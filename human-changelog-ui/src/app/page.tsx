@@ -12,10 +12,8 @@ function Card({ name, origin, version, changelog, url, date }: any) {
     <div className={styles.card}>
 
       <div className={styles.description}>
-        <h2>{name}</h2>
         <h2>{origin}</h2>
-
-        <span>Release: {version}</span>
+        <span>{name} - {version}</span>
         <br />
         <span>Date: {date}</span>
 
