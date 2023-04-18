@@ -7,15 +7,21 @@ import { useEffect, useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'] })
 
-function Card({ name, origin, version, changelog, url }: any) {
+function Card({ name, origin, version, changelog, url, date }: any) {
   return (
     <div className={styles.card}>
 
       <div className={styles.description}>
+        <h2>{name}</h2>
         <h2>{origin}</h2>
+
         <span>Release: {version}</span>
-        {/* <a href={url}>{url}</a> */}
+        <br />
+        <span>Date: {date}</span>
+
       </div>
+      <br />
+      <button><a target='_blank' href={url}>See on github</a></button>
       <div className={styles.code}>
         <br />
         {

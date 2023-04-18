@@ -70,7 +70,7 @@ export async function POST(request: Request) {
                         },
                     ],
                 },
-                "origin": parseRichText(version),
+                "origin": parseRichText(origin),
                 "version": parseRichText(version),
                 "changelog": parseRichText(changelog),
                 "date": parseRichText(date),
