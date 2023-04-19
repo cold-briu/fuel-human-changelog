@@ -8,11 +8,25 @@ jobs:
   create-card:
     runs-on: ubuntu-latest
     steps:
-    - name: Parse release body
-      shell: bash
-      
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Remove line breaks
       run: echo "PARSED_RELEASE_BODY=$(echo '${{ github.event.release.body }}' | sed 's/$/\\n/' | tr -d '\n' )" >> $GITHUB_ENV
-    - name: Deploy Stage
+
+    - name: Lint notes
+      shell: bash
+      run: |
+        RELEASE_NOTES=$(bash ./.github/workflows/scripts/lint-changelog.sh '${{ env.PARSED_RELEASE_BODY }}')
+        if [ $? -ne 0 ]; then
+          echo "$RELEASE_NOTES"
+          exit 1
+        fi
+        echo "RELEASE_NOTES=$RELEASE_NOTES" >> $GITHUB_ENV
+
+
+    - name: Upload notes
       uses: fjogeleit/http-request-action@v1
       with:
         url: 'https://human-changelog-git-main-cold-briu.vercel.app/api/changelogs'
@@ -23,5 +37,7 @@ jobs:
               "name" : "${{ github.event.release.name }}", 
               "origin" : "${{ github.repository }}", 
               "version" : "${{ github.event.release.tag_name }}", 
-              "changelog" : "${{ env.PARSED_RELEASE_BODY }}"
+              "changelog" : "${{ env.RELEASE_NOTES || 'MISSING_NOTES' }}",
+              "date" : "${{ github.event.release.published_at }}",
+              "url" : "${{ github.event.release.html_url }}"
             }
